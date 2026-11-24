@@ -1,0 +1,16 @@
+{"profile_id": "p1", "posting_id": "e01", "grade": 3, "judge": "synthetic-example"}
+{"profile_id": "p1", "posting_id": "e02", "grade": 3, "judge": "synthetic-example"}
+{"profile_id": "p1", "posting_id": "e03", "grade": 2, "judge": "synthetic-example"}
+{"profile_id": "p1", "posting_id": "e04", "grade": 0, "judge": "synthetic-example"}
+{"profile_id": "p1", "posting_id": "e05", "grade": 0, "judge": "synthetic-example"}
+{"profile_id": "p1", "posting_id": "e06", "grade": 0, "judge": "synthetic-example"}
+{"profile_id": "p1", "posting_id": "e07", "grade": 1, "judge": "synthetic-example"}
+{"profile_id": "p1", "posting_id": "e08", "grade": 0, "judge": "synthetic-example"}
+{"profile_id": "p2", "posting_id": "e01", "grade": 0, "judge": "synthetic-example"}
+{"profile_id": "p2", "posting_id": "e02", "grade": 0, "judge": "synthetic-example"}
+{"profile_id": "p2", "posting_id": "e03", "grade": 1, "judge": "synthetic-example"}
+{"profile_id": "p2", "posting_id": "e04", "grade": 3, "judge": "synthetic-example"}
+{"profile_id": "p2", "posting_id": "e05", "grade": 0, "judge": "synthetic-example"}
+{"profile_id": "p2", "posting_id": "e06", "grade": 1, "judge": "synthetic-example"}
+{"profile_id": "p2", "posting_id": "e07", "grade": 0, "judge": "synthetic-example"}
+{"profile_id": "p2", "posting_id": "e08", "grade": 0, "judge": "synthetic-example"}
