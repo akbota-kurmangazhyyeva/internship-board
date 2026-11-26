@@ -44,11 +44,14 @@ export function AuthProvider({ children }: { children: ReactNode }) {
     };
   }, [refresh]);
 
+  // Wait until the user is loaded before resolving, so the next page never sees "logged out" for a moment.
   const login = async (email: string, password: string) => {
     setToken((await api.login(email, password)).access_token);
+    await refresh();
   };
   const register = async (email: string, password: string) => {
     setToken((await api.register(email, password)).access_token);
+    await refresh();
   };
   const logout = () => setToken(null);
 
