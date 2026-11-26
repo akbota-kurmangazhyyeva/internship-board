@@ -1,7 +1,12 @@
 # Internship Board: local and server environment (NFR-13).
-#   docker compose up --build        -> API on http://localhost:8000 (docs at /docs)
+#   docker compose up --build        -> web app on http://localhost:3000, API on http://localhost:8000 (docs at /docs)
 #
-# Part B adds: redis, worker + beat (Celery scheduler/adapters) and web (Next.js) services here.
+#   db      PostgreSQL 16 (canonical data)
+#   api     FastAPI (Part A)
+#   redis   job queue for the scheduler
+#   worker  Celery worker: runs source adapters with retry (Part B)
+#   beat    Celery beat: puts collection jobs on the queue on schedule (Part B)
+#   web     Next.js student web app (Part B)
 
 services:
   db:
@@ -35,5 +40,54 @@ services:
       - "${API_PORT:-8000}:8000"
     command: sh -c "alembic upgrade head && uvicorn app.main:app --host 0.0.0.0 --port 8000"
 
+  redis:
+    image: redis:7-alpine
+    healthcheck:
+      test: ["CMD", "redis-cli", "ping"]
+      interval: 3s
+      timeout: 3s
+      retries: 20
+
+  worker:
+    build: ./backend
+    environment: &collector-env
+      ENV: ${ENV:-dev}
+      DATABASE_URL: postgresql+psycopg://${POSTGRES_USER:-board}:${POSTGRES_PASSWORD:-board}@db:5432/${POSTGRES_DB:-board}
+      SECRET_KEY: ${SECRET_KEY:-dev-only-insecure-secret-change-me}
+      REDIS_URL: redis://redis:6379/0
+      HH_APP_TOKEN: ${HH_APP_TOKEN:-}
+      HTTP_USER_AGENT: "${HTTP_USER_AGENT:-InternshipBoardKZ/0.1 (NU senior project; contact: team26@nu.edu.kz)}"
+      SNAPSHOT_DIR: /data/snapshots
+      SEED_PATH: /seed/postings.jsonl
+      HH_STUB_PATH: /app/data/hh_stub/vacancies.json
+    volumes:
+      - snapshots:/data/snapshots
+      - ./backend/data/seed:/seed:ro
+    depends_on:
+      api: # api runs the migrations first
+        condition: service_started
+      redis:
+        condition: service_healthy
+    command: celery -A app.worker worker --loglevel=info --concurrency=2
+
+  beat:
+    build: ./backend
+    environment: *collector-env
+    depends_on:
+      redis:
+        condition: service_healthy
+    command: celery -A app.worker beat --loglevel=info --schedule /tmp/celerybeat-schedule
+
+  web:
+    build:
+      context: ./web
+      args:
+        NEXT_PUBLIC_API_URL: ${PUBLIC_API_URL:-http://localhost:8000}
+    depends_on:
+      - api
+    ports:
+      - "${WEB_PORT:-3000}:3000"
+
 volumes:
   pgdata:
+  snapshots:

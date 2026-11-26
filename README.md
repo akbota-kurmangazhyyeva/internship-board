@@ -12,23 +12,29 @@ internship-board/
 │   │   ├── dedup/           duplicate detection and canonical grouping (pure functions)
 │   │   ├── ranking/         explainable fit score (pure functions)
 │   │   ├── pipeline/        snapshot → extract → dedup → canonical vacancy → lifecycle
-│   │   ├── ingest/          contract.py: what source adapters hand to the pipeline
+│   │   ├── ingest/          contract.py + Part B: adapters/, http.py, snapshots.py, runner.py, seed_tools.py
 │   │   ├── services/        search / filter / feed queries
 │   │   ├── models.py        database schema (Alembic migrations in alembic/)
-│   │   └── cli.py           load-jsonl, reprocess, expire
+│   │   ├── worker.py        Celery scheduler: per-source jobs with retry, daily expiry (Part B)
+│   │   └── cli.py           load-jsonl, reprocess, expire, run-source, sources, collect-seed, seed-from-csv
 │   ├── evaluation/          frozen test set tooling and metric scripts (see evaluation/README.md)
+│   ├── data/seed/           seed dataset instructions and CSV template (Part B)
 │   └── tests/               unit + PostgreSQL integration tests
+├── web/                     Next.js + TypeScript student web app (Part B)
+├── docs/sources.md          source audit and policy matrix (Part B)
 ├── docker/                  Postgres init (creates the board_test database)
-├── docker-compose.yml       db + api (Part B adds redis, worker, beat, web)
+├── docker-compose.yml       db, api, redis, worker, beat, web
 └── .github/workflows/ci.yml lint, migrations check, tests, eval smoke test, docker build
 ```
 
 ## Quick start
 
 ```bash
-cp .env.example .env              # then set SECRET_KEY
-docker compose up --build -d      # PostgreSQL + API, migrations run automatically
+cp .env.example .env              # then set SECRET_KEY (and HH_APP_TOKEN when you have it)
+docker compose up --build -d      # PostgreSQL, API, Redis, scheduler, web app; migrations run automatically
+open http://localhost:3000        # student web app
 open http://localhost:8000/docs   # interactive API documentation (OpenAPI)
+docker compose exec api python -m app.cli run-source indrive_careers   # collect a live source right now
 
 # load postings from a JSONL file (one RawPostingIn per line)
 docker compose exec api python -m app.cli load-jsonl evaluation/example/postings.jsonl --source example --name "Synthetic example"
@@ -80,6 +86,44 @@ free-text rules. The seed file adapter can be as small as `python -m app.cli loa
 
 Unknown values are `null` (or `[]`) in cards. The UI should render them as "Unknown", never as a guess (FR-07, NFR-11).
 
+## Part B: collection and web app
+
+**Sources** (policy matrix and decisions in [docs/sources.md](docs/sources.md)):
+
+| Key | What | Status |
+|---|---|---|
+| `seed_file` | JSONL of manually collected real postings ([backend/data/seed](backend/data/seed/README.md)) | ready |
+| `indrive_careers` | inDrive career site via its public WordPress REST API, Kazakhstan postings only | live, no credentials |
+| `hh_kz` | hh.kz official API, area 40 | **stub mode** (6 demo postings, labelled) until `HH_APP_TOKEN` is set; then the real API |
+
+**How a run works** (`app/ingest/runner.py`): register source → open a `source_runs` row → adapter fetches through
+`PoliteClient` (User-Agent with contact, 1 request/s per host, robots.txt for non-API sources, retries 429/5xx with
+backoff and Retry-After) → every raw HTTP response is saved gzip-compressed under `data/snapshots/<source>/<day>/` →
+postings go to `ingest_batch` one by one → after a complete full scan, unseen postings are marked missing → the run
+is closed as success/failed with counts and the error.
+
+**Scheduler** (`app/worker.py`, Celery + Redis): one job per source at its own interval (seed 24 h, hh 6 h, career
+sites 12 h) plus daily expiry at 03:10 Almaty time. A transient failure (timeout, 429, 5xx) retries the whole run up to
+3 times with exponential backoff (1, 2, 4 min + jitter); a permanent one (no token, 403, robots.txt) is recorded and
+not retried. A Redis lock prevents overlapping runs of one source.
+
+```bash
+python -m app.cli run-source indrive_careers   # same code path as the scheduler
+python -m app.cli sources                      # source health: latest runs, errors
+python -m app.cli disable-source hh_kz         # stop a source and hide its vacancies (FR-26)
+```
+
+**Web app** (`web/`, Next.js 15 + TypeScript, no UI framework): browse with search, filters and sort kept in the URL;
+personal feed with fit score and reasons; vacancy detail with every field's provenance ("How we know": source field or
+text rule, confidence, evidence) and all source links with last-checked time; save/unsave; profile form with
+type-ahead skills and cities; consent toggle and account deletion. Unknown values are always shown as "Unknown".
+Responsive down to 360 px, keyboard accessible (skip link, labels, focus styles, aria-live results).
+
+```bash
+cd web && npm install && npm run dev            # http://localhost:3000, expects the API on :8000
+npm test && npm run typecheck && npm run build
+```
+
 ## How the intelligence works
 
 * **Extraction** ([app/extraction](backend/app/extraction)): Kazakh/Russian/English rules for level, internship vs.
@@ -116,6 +160,18 @@ Thresholds and weights are initial values. Tune them on the **dev** split only (
 | NFR-09 Argon2 hashing, secrets from env | `security.py`, `config.py` |
 | NFR-12/13 CI, Docker Compose | `.github/workflows/ci.yml`, `docker-compose.yml` |
 | NFR-16 / DR-03..07 Kazakh, Russian, English; UTC+5 | `extraction/vocab.py`, `extraction/dates.py`, `config.py::KZ_TZ` |
+
+## Requirements traceability (Part B)
+
+| Requirement | Where |
+|---|---|
+| Source adapters, scheduled collection | `ingest/adapters/`, `worker.py::build_schedule` |
+| FR-03 raw snapshots for audit | `ingest/snapshots.py` (HTTP responses) + Part A `RawSnapshot` (posting text) |
+| Retry, rate limits, failure reporting | `ingest/http.py::PoliteClient`, `worker.py::collect_source`, `source_runs`, `cli sources` |
+| FR-11 postings gone from a full scan | `runner.py` → `mark_missing` only after a complete scan |
+| FR-14/16-22 student UI (profile, search, filters, feed, detail, saved) | `web/src/app/*` |
+| NFR-11 Unknown never shown as a guess | `web/src/components/VacancyCard.tsx::Unknown`, `web/src/lib/format.ts` |
+| Source policy (kickoff risk 1) | `docs/sources.md`, robots.txt check, User-Agent with contact |
 
 Not in Part A v0: password reset and notifications (need the email/Telegram channel), admin API for the
 review queue (tables and auto-resolution exist; FR-10/27 are Spring), and a language-model extractor (the

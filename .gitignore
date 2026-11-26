@@ -8,3 +8,7 @@ __pycache__/
 node_modules/
 backend/evaluation/reports/*
 !backend/evaluation/reports/.gitkeep
+backend/data/snapshots/
+web/.next/
+web/next-env.d.ts
+*.tsbuildinfo

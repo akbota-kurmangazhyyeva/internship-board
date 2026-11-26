@@ -1,0 +1,22 @@
+{
+  "id": "120000001",
+  "name": "Стажер аналитик данных",
+  "area": {"id": "160", "name": "Алматы"},
+  "address": {"city": "Алматы", "street": "проспект Аль-Фараби"},
+  "salary": null,
+  "salary_range": {"from": 150000, "to": 200000, "currency": "KZT", "gross": false, "mode": {"id": "MONTH"}},
+  "experience": {"id": "noExperience", "name": "Нет опыта"},
+  "employment": {"id": "probation", "name": "Стажировка"},
+  "employment_form": {"id": "FULL", "name": "Полная"},
+  "internship": true,
+  "schedule": {"id": "fullDay", "name": "Полный день"},
+  "work_format": [{"id": "HYBRID", "name": "Гибрид"}],
+  "key_skills": [{"name": "SQL"}, {"name": "Python"}, {"name": "Power BI"}],
+  "employer": {"id": "999", "name": "ТОО «Пример Финтех»"},
+  "published_at": "2026-11-20T10:15:00+0500",
+  "alternate_url": "https://hh.kz/vacancy/120000001",
+  "apply_alternate_url": "https://hh.kz/applicant/vacancy_response?vacancyId=120000001",
+  "archived": false,
+  "description": "<p>Приглашаем студентов 3–4 курса на стажировку в команду аналитики.</p><ul><li>SQL, Python</li><li>Английский B1</li></ul><p>Прием заявок до 20 декабря.</p>",
+  "branded_description": "<div>large html</div>"
+}

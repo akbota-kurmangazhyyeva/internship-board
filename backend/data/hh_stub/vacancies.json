@@ -1,0 +1,262 @@
+{
+ "_note": "STUB DATA: fictional employers in hh.ru /vacancies/{id} format. Used only while HH_APP_TOKEN is not set.",
+ "items": [
+  {
+   "id": "900001",
+   "name": "Стажер Backend-разработчик (Go)",
+   "area": {
+    "id": "0",
+    "name": "Алматы"
+   },
+   "salary_range": {
+    "from": 200000,
+    "to": 250000,
+    "currency": "KZT",
+    "gross": false
+   },
+   "experience": {
+    "id": "noExperience"
+   },
+   "employment": {
+    "id": "probation"
+   },
+   "internship": true,
+   "work_format": [
+    {
+     "id": "HYBRID"
+    }
+   ],
+   "key_skills": [
+    {
+     "name": "Go"
+    },
+    {
+     "name": "PostgreSQL"
+    },
+    {
+     "name": "Docker"
+    }
+   ],
+   "employer": {
+    "name": "ТОО «Демо Финтех»"
+   },
+   "published_at": "2026-11-20T10:00:00+0500",
+   "alternate_url": "https://hh.kz/vacancy/900001",
+   "apply_alternate_url": "https://hh.kz/applicant/vacancy_response?vacancyId=900001",
+   "archived": false,
+   "description": "<p>Приглашаем студентов 3–4 курса на оплачиваемую стажировку backend-разработчика.</p><ul><li>Go или Python</li><li>SQL, Docker</li></ul><p>Гибридный формат, Алматы. Прием заявок до 20 декабря.</p>"
+  },
+  {
+   "id": "900002",
+   "name": "Junior Data Analyst",
+   "area": {
+    "id": "0",
+    "name": "Астана"
+   },
+   "salary_range": null,
+   "experience": {
+    "id": "noExperience"
+   },
+   "employment": {
+    "id": "full"
+   },
+   "internship": false,
+   "work_format": [
+    {
+     "id": "ON_SITE"
+    }
+   ],
+   "key_skills": [
+    {
+     "name": "SQL"
+    },
+    {
+     "name": "Power BI"
+    },
+    {
+     "name": "Excel"
+    }
+   ],
+   "employer": {
+    "name": "Demo Retail Group"
+   },
+   "published_at": "2026-11-22T09:30:00+0500",
+   "alternate_url": "https://hh.kz/vacancy/900002",
+   "apply_alternate_url": "https://hh.kz/applicant/vacancy_response?vacancyId=900002",
+   "archived": false,
+   "description": "<p>We are hiring a Junior Data Analyst for our Astana office. SQL, Power BI, Excel. English B2, Kazakh or Russian.</p>"
+  },
+  {
+   "id": "900003",
+   "name": "Маркетинг бойынша тағылымдамашы",
+   "area": {
+    "id": "0",
+    "name": "Шымкент"
+   },
+   "salary_range": {
+    "from": 100000,
+    "to": null,
+    "currency": "KZT",
+    "gross": true
+   },
+   "experience": {
+    "id": "noExperience"
+   },
+   "employment": {
+    "id": "probation"
+   },
+   "internship": true,
+   "work_format": [
+    {
+     "id": "ON_SITE"
+    }
+   ],
+   "key_skills": [
+    {
+     "name": "SMM"
+    },
+    {
+     "name": "Figma"
+    }
+   ],
+   "employer": {
+    "name": "Демо Медиа"
+   },
+   "published_at": "2026-11-18T12:00:00+0500",
+   "alternate_url": "https://hh.kz/vacancy/900003",
+   "apply_alternate_url": "https://hh.kz/applicant/vacancy_response?vacancyId=900003",
+   "archived": false,
+   "description": "<p>3-4 курс студенттерін маркетинг бөліміне тағылымдамаға шақырамыз. SMM, Figma. Өтінім қабылдау 10 желтоқсанға дейін.</p>"
+  },
+  {
+   "id": "900004",
+   "name": "QA Intern (Remote)",
+   "area": {
+    "id": "0",
+    "name": "Алматы"
+   },
+   "salary_range": null,
+   "experience": {
+    "id": "noExperience"
+   },
+   "employment": {
+    "id": "probation"
+   },
+   "internship": true,
+   "work_format": [
+    {
+     "id": "REMOTE"
+    }
+   ],
+   "key_skills": [
+    {
+     "name": "Postman"
+    },
+    {
+     "name": "SQL"
+    },
+    {
+     "name": "Jira"
+    }
+   ],
+   "employer": {
+    "name": "Demo Soft LLP"
+   },
+   "published_at": "2026-11-24T15:00:00+0500",
+   "alternate_url": "https://hh.kz/vacancy/900004",
+   "apply_alternate_url": "https://hh.kz/applicant/vacancy_response?vacancyId=900004",
+   "archived": false,
+   "description": "<p>Remote QA internship for students. Postman, SQL basics, Jira. Paid internship, 3 months. Apply by December 15.</p>"
+  },
+  {
+   "id": "900005",
+   "name": "Стажер-аналитик в отдел рисков",
+   "area": {
+    "id": "0",
+    "name": "Алматы"
+   },
+   "salary_range": {
+    "from": 180000,
+    "to": 180000,
+    "currency": "KZT",
+    "gross": false
+   },
+   "experience": {
+    "id": "noExperience"
+   },
+   "employment": {
+    "id": "probation"
+   },
+   "internship": true,
+   "work_format": [
+    {
+     "id": "ON_SITE"
+    }
+   ],
+   "key_skills": [
+    {
+     "name": "Python"
+    },
+    {
+     "name": "SQL"
+    },
+    {
+     "name": "Excel"
+    }
+   ],
+   "employer": {
+    "name": "АО «Демо Банк»"
+   },
+   "published_at": "2026-11-15T11:00:00+0500",
+   "alternate_url": "https://hh.kz/vacancy/900005",
+   "apply_alternate_url": "https://hh.kz/applicant/vacancy_response?vacancyId=900005",
+   "archived": false,
+   "description": "<p>Стажировка в отделе рисков для студентов экономических и IT специальностей. Python, SQL, Excel. Офис в Алматы.</p>"
+  },
+  {
+   "id": "900006",
+   "name": "Junior Frontend-разработчик",
+   "area": {
+    "id": "0",
+    "name": "Караганда"
+   },
+   "salary_range": {
+    "from": 350000,
+    "to": 450000,
+    "currency": "KZT",
+    "gross": false
+   },
+   "experience": {
+    "id": "between1And3"
+   },
+   "employment": {
+    "id": "full"
+   },
+   "internship": false,
+   "work_format": [
+    {
+     "id": "HYBRID"
+    }
+   ],
+   "key_skills": [
+    {
+     "name": "React"
+    },
+    {
+     "name": "TypeScript"
+    },
+    {
+     "name": "CSS"
+    }
+   ],
+   "employer": {
+    "name": "ТОО «Демо Лабс»"
+   },
+   "published_at": "2026-11-21T14:00:00+0500",
+   "alternate_url": "https://hh.kz/vacancy/900006",
+   "apply_alternate_url": "https://hh.kz/applicant/vacancy_response?vacancyId=900006",
+   "archived": false,
+   "description": "<p>Ищем junior frontend-разработчика. React, TypeScript. Опыт от 1 года. Гибрид, Караганда.</p>"
+  }
+ ]
+}
